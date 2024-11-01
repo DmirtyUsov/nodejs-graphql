@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import DataLoader from 'dataloader';
-import { UserModel } from '../models/all.js';
+import { UserModel } from './user.model.js';
+
 
 export const userDataLoader = (prismaClient: PrismaClient) => {
   const data = new DataLoader(async (ids: Readonly<string[]>) => {

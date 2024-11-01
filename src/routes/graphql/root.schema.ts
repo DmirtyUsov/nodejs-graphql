@@ -1,5 +1,6 @@
 import { GraphQLObjectType, GraphQLSchema } from 'graphql';
-import { MemberTypeQuery, UserQuery } from './queries/all.js';
+import { UserQuery } from './user/user.query.js';
+import { MemberTypeQuery } from './member-type/member-type.query.js';
 
 export const rootSchema = new GraphQLSchema({
   query: new GraphQLObjectType({

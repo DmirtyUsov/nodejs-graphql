@@ -3,8 +3,9 @@ import { createGqlResponseSchema, gqlResponseSchema } from './schemas.js';
 import { graphql } from 'graphql';
 import { rootSchema } from './root.schema.js';
 import { ContextType } from './types/all.js';
-import { userDataLoader } from './dataloaders/all.js';
-import { memberTypeDataLoader } from './dataloaders/member-type.dataloader.js';
+
+import { memberTypeDataLoader } from './member-type/member-type.dataloader.js';
+import { userDataLoader } from './user/user.dataloader.js';
 
 const plugin: FastifyPluginAsyncTypebox = async (fastify) => {
   const { prisma } = fastify;

@@ -1,6 +1,6 @@
 import { GraphQLFloat, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
-import { ContextType, UUIDType } from './all.js';
-import { UserModel } from '../models/user.model.js';
+import { ContextType, UUIDType } from '../types/all.js';
+import { UserModel } from './user.model.js';
 
 export const UserGQLType: GraphQLObjectType = new GraphQLObjectType<
   UserModel,

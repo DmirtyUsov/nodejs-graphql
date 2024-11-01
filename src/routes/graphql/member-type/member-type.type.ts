@@ -6,8 +6,8 @@ import {
   GraphQLObjectType,
   GraphQLString,
 } from 'graphql';
-import { MemberTypeModel } from '../models/member-type.model.js';
-import { ContextType } from './context.type.js';
+import { MemberTypeModel } from './member-type.model.js';
+import { ContextType } from '../types/context.type.js';
 
 export const MemberTypeEnum = new GraphQLEnumType({
   name: 'MemberTypeEnum',
@@ -18,7 +18,7 @@ export const MemberTypeEnum = new GraphQLEnumType({
   },
 });
 
-export const MemberType: GraphQLObjectType<MemberTypeModel, ContextType> =
+export const MemberTypeGQL: GraphQLObjectType<MemberTypeModel, ContextType> =
   new GraphQLObjectType({
     name: 'MemberTypes',
     description: '',

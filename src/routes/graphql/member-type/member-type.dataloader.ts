@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import DataLoader from 'dataloader';
-import { MemberTypeModel } from '../models/member-type.model.js';
+import { MemberTypeModel } from './member-type.model.js';
 
 export const memberTypeDataLoader = (prismaClient: PrismaClient) => {
   const data = new DataLoader(async (ids: Readonly<string[]>) => {
