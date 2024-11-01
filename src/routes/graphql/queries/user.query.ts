@@ -1,4 +1,4 @@
-import { GraphQLList, GraphQLResolveInfo, GraphQLString } from 'graphql';
+import { GraphQLFieldConfig, GraphQLList, GraphQLResolveInfo, GraphQLString, ThunkObjMap } from 'graphql';
 import { ContextType, UserGQLType } from '../types/all.js';
 import {
   parseResolveInfo,

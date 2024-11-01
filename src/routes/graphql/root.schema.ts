@@ -1,11 +1,11 @@
 import { GraphQLObjectType, GraphQLSchema } from 'graphql';
-import { UserQuery } from './queries/all.js';
+import { MemberTypeQuery, UserQuery } from './queries/all.js';
 
 export const rootSchema = new GraphQLSchema({
   query: new GraphQLObjectType({
     name: 'Query',
     description: 'Root Query',
-    fields: () => ({ ...UserQuery }),
+    fields: () => ({ ...UserQuery, ...MemberTypeQuery }),
   }),
 
   // mutation: new GraphQLObjectType({

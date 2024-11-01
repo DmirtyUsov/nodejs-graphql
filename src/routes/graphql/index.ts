@@ -4,6 +4,7 @@ import { graphql } from 'graphql';
 import { rootSchema } from './root.schema.js';
 import { ContextType } from './types/all.js';
 import { userDataLoader } from './dataloaders/all.js';
+import { memberTypeDataLoader } from './dataloaders/member-type.dataloader.js';
 
 const plugin: FastifyPluginAsyncTypebox = async (fastify) => {
   const { prisma } = fastify;
@@ -22,7 +23,10 @@ const plugin: FastifyPluginAsyncTypebox = async (fastify) => {
 
       const contextValue: ContextType = {
         prismaClient: fastify.prisma,
-        dataLoaders: { userDataLoader: userDataLoader(prisma) },
+        dataLoaders: {
+          userDataLoader: userDataLoader(prisma),
+          memberTypeDataLoader: memberTypeDataLoader(prisma),
+        },
       };
       const { data, errors } = await graphql({
         schema: rootSchema,
