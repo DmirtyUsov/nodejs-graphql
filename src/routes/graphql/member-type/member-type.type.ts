@@ -7,9 +7,9 @@ import {
   GraphQLString,
 } from 'graphql';
 import { MemberTypeModel } from './member-type.model.js';
-import { ContextType } from '../types/context.type.js';
+import { RequestContext } from '../types/request-context.js';
 
-export const MemberTypeEnum = new GraphQLEnumType({
+export const MemberTypeIdGQL = new GraphQLEnumType({
   name: 'MemberTypeEnum',
   description: 'Values for MemberTypeId',
   values: {
@@ -18,12 +18,12 @@ export const MemberTypeEnum = new GraphQLEnumType({
   },
 });
 
-export const MemberTypeGQL: GraphQLObjectType<MemberTypeModel, ContextType> =
+export const MemberTypeGQL: GraphQLObjectType<MemberTypeModel, RequestContext> =
   new GraphQLObjectType({
     name: 'MemberTypes',
     description: '',
     fields: () => ({
-      id: { type: new GraphQLNonNull(MemberTypeEnum) },
+      id: { type: new GraphQLNonNull(MemberTypeIdGQL) },
       discount: { type: GraphQLFloat },
       postsLimitPerMonth: { type: GraphQLInt },
       profiles: {

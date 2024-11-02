@@ -1,28 +1,28 @@
 import { GraphQLList, GraphQLString } from 'graphql';
-import { ContextType } from '../types/all.js';
+import { RequestContext, UUIDType } from '../types/all.js';
 import {} from 'graphql-parse-resolve-info';
 import { UserModel } from './user.model.js';
 import { UserGQLType } from './user.type.js';
 
 export const UserQuery = {
-  greeting: {
-    type: GraphQLString,
-    description: 'Greetings',
-    resolve: () => 'Hello World!',
-  },
   user: {
-    type: GraphQLString,
+    type: UserGQLType,
     description: 'A single user',
-    resolve: () => 'User!',
+    args: { id: { type: UUIDType } },
+    resolve: async (_parent: unknown, args: { id: string }, context: RequestContext) => {
+      const user = await context.dataLoaders.user.load(args.id);
+      return user;
+    },
   },
+
   users: {
     type: new GraphQLList(UserGQLType),
     description: 'List of all users',
-    resolve: async (_obj: unknown, _args: unknown, context: ContextType) => {
+    resolve: async (_noParent: unknown, _noArgs: unknown, context: RequestContext) => {
       const users: UserModel[] = await context.prismaClient.user.findMany();
 
       users.forEach((user) => {
-        context.dataLoaders.userDataLoader.prime(user.id, user);
+        context.dataLoaders.user.prime(user.id, user);
       });
 
       return users;

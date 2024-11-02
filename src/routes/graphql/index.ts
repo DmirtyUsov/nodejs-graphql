@@ -2,10 +2,14 @@ import { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 import { createGqlResponseSchema, gqlResponseSchema } from './schemas.js';
 import { graphql } from 'graphql';
 import { rootSchema } from './root.schema.js';
-import { ContextType } from './types/all.js';
+import { RequestContext } from './types/all.js';
 
 import { memberTypeDataLoader } from './member-type/member-type.dataloader.js';
 import { userDataLoader } from './user/user.dataloader.js';
+import {
+  profileDataLoader,
+  userProfileDataLoader,
+} from './profile/profile.dataloader.js';
 
 const plugin: FastifyPluginAsyncTypebox = async (fastify) => {
   const { prisma } = fastify;
@@ -22,11 +26,13 @@ const plugin: FastifyPluginAsyncTypebox = async (fastify) => {
     async handler(req) {
       const { query, variables } = req.body;
 
-      const contextValue: ContextType = {
+      const contextValue: RequestContext = {
         prismaClient: fastify.prisma,
         dataLoaders: {
-          userDataLoader: userDataLoader(prisma),
-          memberTypeDataLoader: memberTypeDataLoader(prisma),
+          user: userDataLoader(prisma),
+          memberType: memberTypeDataLoader(prisma),
+          profile: profileDataLoader(prisma),
+          profileByUserId: userProfileDataLoader(prisma),
         },
       };
       const { data, errors } = await graphql({

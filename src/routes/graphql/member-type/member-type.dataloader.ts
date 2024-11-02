@@ -8,11 +8,15 @@ export const memberTypeDataLoader = (prismaClient: PrismaClient) => {
       where: { id: { in: ids as string[] } },
     });
 
-    const memberTypesByIds = ids.map((id) =>
-      memberTypes.find((memberType) => memberType.id === id),
+    const dataMap: { [idx: string]: MemberTypeModel } = memberTypes.reduce(
+      (acc, curr) => {
+        acc[curr.id] = curr;
+        return acc;
+      },
+      {},
     );
 
-    return memberTypesByIds;
+    return ids.map((id) => dataMap[id]);
   });
 
   return data;

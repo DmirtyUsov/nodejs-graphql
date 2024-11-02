@@ -2,14 +2,18 @@ import { PrismaClient } from '@prisma/client';
 import DataLoader from 'dataloader';
 import { UserModel } from './user.model.js';
 
-
 export const userDataLoader = (prismaClient: PrismaClient) => {
   const data = new DataLoader(async (ids: Readonly<string[]>) => {
-    const users: UserModel[] = await prismaClient.user.findMany({});
+    const users: UserModel[] = await prismaClient.user.findMany({
+      where: { id: { in: ids as string[] } },
+    });
 
-    const usersByIds = ids.map((id) => users.find((user) => user.id === id));
+    const dataMap: { [idx: string]: UserModel } = users.reduce((acc, curr) => {
+      acc[curr.id] = curr;
+      return acc;
+    }, {});
 
-    return usersByIds;
+    return ids.map((id) => dataMap[id]);
   });
 
   return data;
