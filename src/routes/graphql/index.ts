@@ -10,7 +10,7 @@ import {
   profileDataLoader,
   userProfileDataLoader,
 } from './profile/profile.dataloader.js';
-import { postDataLoader, userPostDataLoader } from './post/post.dataloader.js';
+import { postDataLoader, userPostsDataLoader } from './post/post.dataloader.js';
 
 const plugin: FastifyPluginAsyncTypebox = async (fastify) => {
   const { prisma } = fastify;
@@ -35,7 +35,7 @@ const plugin: FastifyPluginAsyncTypebox = async (fastify) => {
           profile: profileDataLoader(prisma),
           profileByUser: userProfileDataLoader(prisma),
           post: postDataLoader(prisma),
-          postByUser: userPostDataLoader(prisma),
+          postsByUser: userPostsDataLoader(prisma),
         },
       };
       const { data, errors } = await graphql({

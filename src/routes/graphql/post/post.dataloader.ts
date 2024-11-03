@@ -19,18 +19,13 @@ export const postDataLoader = (prismaClient: PrismaClient) => {
   return data;
 };
 
-export const userPostDataLoader = (prismaClient: PrismaClient) => {
+export const userPostsDataLoader = (prismaClient: PrismaClient) => {
   const data = new DataLoader(async (ids: Readonly<string[]>) => {
     const posts: PostModel[] = await prismaClient.post.findMany({
       where: { authorId: { in: ids as string[] } },
     });
 
-    const dataMap: { [idx: string]: PostModel } = posts.reduce((acc, curr) => {
-      acc[curr.authorId] = curr;
-      return acc;
-    }, {});
-
-    return ids.map((id) => dataMap[id]);
+    return ids.map((id) => posts.filter((post) => post.authorId === id));
   });
 
   return data;

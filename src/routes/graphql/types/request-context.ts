@@ -13,6 +13,6 @@ export type RequestContext = {
     profile: DataLoader<string, ProfileModel | undefined, string>;
     profileByUser: DataLoader<string, ProfileModel | undefined, string>;
     post: DataLoader<string, PostModel | undefined, string>;
-    postByUser: DataLoader<string, PostModel | undefined, string>;
+    postsByUser: DataLoader<string, PostModel[] | undefined, string>;
   };
 };
