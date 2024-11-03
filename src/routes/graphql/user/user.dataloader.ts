@@ -6,14 +6,12 @@ export const userDataLoader = (prismaClient: PrismaClient) => {
   const data = new DataLoader(async (ids: Readonly<string[]>) => {
     const users: UserModel[] = await prismaClient.user.findMany({
       where: { id: { in: ids as string[] } },
+      include: { userSubscribedTo: true, subscribedToUser: true },
     });
 
-    const dataMap: { [idx: string]: UserModel } = users.reduce((acc, curr) => {
-      acc[curr.id] = curr;
-      return acc;
-    }, {});
+    const usersByIds = ids.map((id) => users.find((user) => user.id === id));
 
-    return ids.map((id) => dataMap[id]);
+    return usersByIds;
   });
 
   return data;

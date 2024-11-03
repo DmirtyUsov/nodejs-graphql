@@ -20,6 +20,7 @@ export const UserGQLType: GraphQLObjectType = new GraphQLObjectType<
     id: { type: new GraphQLNonNull(UUIDType) },
     name: { type: GraphQLString },
     balance: { type: GraphQLFloat },
+
     profile: {
       type: ProfileGQLType,
       resolve: async (parent: UserModel, _noArgs: unknown, context: RequestContext) => {
@@ -27,11 +28,34 @@ export const UserGQLType: GraphQLObjectType = new GraphQLObjectType<
         return profile;
       },
     },
+
     posts: {
-      type: PostGQLType,
+      type: new GraphQLList(PostGQLType),
       resolve: async (parent: UserModel, _noArgs: unknown, context: RequestContext) => {
-        const posts = await context.dataLoaders.postByUser.load(parent.id);
+        const posts = await context.dataLoaders.postsByUser.load(parent.id);
         return posts;
+      },
+    },
+
+    subscribedToUser: {
+      type: new GraphQLList(UserGQLType),
+      resolve: async (parent: UserModel, _noArgs: unknown, context: RequestContext) => {
+        if (parent.subscribedToUser && parent.subscribedToUser.length) {
+          const usersIds = parent.subscribedToUser.map((user) => user.subscriberId);
+          const subscribers = context.dataLoaders.user.loadMany(usersIds);
+          return subscribers;
+        }
+      },
+    },
+
+    userSubscribedTo: {
+      type: new GraphQLList(UserGQLType),
+      resolve: async (parent: UserModel, _noArgs: unknown, context: RequestContext) => {
+        if (parent.userSubscribedTo && parent.userSubscribedTo.length) {
+          const usersIds = parent.userSubscribedTo.map((user) => user.authorId);
+          const authors = context.dataLoaders.user.loadMany(usersIds);
+          return authors;
+        }
       },
     },
   }),
