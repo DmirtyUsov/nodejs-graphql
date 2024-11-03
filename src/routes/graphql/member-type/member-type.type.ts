@@ -2,19 +2,20 @@ import {
   GraphQLEnumType,
   GraphQLFloat,
   GraphQLInt,
+  GraphQLList,
   GraphQLNonNull,
   GraphQLObjectType,
-  GraphQLString,
 } from 'graphql';
 import { MemberTypeModel } from './member-type.model.js';
 import { RequestContext } from '../types/request-context.js';
+import { ProfileGQLType } from '../profile/profile.type.js';
 
 export const MemberTypeIdGQL = new GraphQLEnumType({
-  name: 'MemberTypeEnum',
+  name: 'MemberTypeId',
   description: 'Values for MemberTypeId',
   values: {
-    basic: { value: 'BASIC' },
-    business: { value: 'BUSINESS' },
+    BASIC: { value: 'BASIC' },
+    BUSINESS: { value: 'BUSINESS' },
   },
 });
 
@@ -27,9 +28,13 @@ export const MemberTypeGQL: GraphQLObjectType<MemberTypeModel, RequestContext> =
       discount: { type: GraphQLFloat },
       postsLimitPerMonth: { type: GraphQLInt },
       profiles: {
-        type: GraphQLString,
-        description: 'Profiles with ID',
-        resolve: () => 'Profiles',
+        type: new GraphQLList(ProfileGQLType),
+        resolve: async (parent, _args: unknown, context: RequestContext) => {
+          const profiles = await context.prismaClient.profile.findMany({
+            where: { memberTypeId: parent.id },
+          });
+          return profiles;
+        },
       },
     }),
   });
