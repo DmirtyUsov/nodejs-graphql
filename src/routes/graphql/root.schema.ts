@@ -4,6 +4,7 @@ import { MemberTypeQuery } from './member-type/member-type.query.js';
 import { ProfileQuery } from './profile/profile.query.js';
 import { PostQuery } from './post/post.query.js';
 import { PostMutation } from './post/post.mutation.js';
+import { ProfileMutation } from './profile/profile.mutation.js';
 
 export const rootSchema = new GraphQLSchema({
   query: new GraphQLObjectType({
@@ -15,6 +16,6 @@ export const rootSchema = new GraphQLSchema({
   mutation: new GraphQLObjectType({
     name: 'Mutation',
     description: 'Root Mutation',
-    fields: () => ({ ...PostMutation }),
+    fields: () => ({ ...PostMutation, ...ProfileMutation }),
   }),
 });

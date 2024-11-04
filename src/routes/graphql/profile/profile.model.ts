@@ -5,3 +5,5 @@ export type ProfileModel = {
   userId: string;
   memberTypeId: string;
 };
+
+export type ProfileDto = Omit<ProfileModel, 'id'>;
