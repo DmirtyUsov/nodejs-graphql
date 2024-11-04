@@ -1,6 +1,6 @@
 import { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 import { createGqlResponseSchema, gqlResponseSchema } from './schemas.js';
-import { graphql } from 'graphql';
+import { graphql, parse, validate } from 'graphql';
 import { rootSchema } from './root.schema.js';
 import { RequestContext } from './types/all.js';
 
@@ -11,6 +11,9 @@ import {
   userProfileDataLoader,
 } from './profile/profile.dataloader.js';
 import { postDataLoader, userPostsDataLoader } from './post/post.dataloader.js';
+import depthLimit from 'graphql-depth-limit';
+
+const QUERIES_DEPTH_LIMIT = 5;
 
 const plugin: FastifyPluginAsyncTypebox = async (fastify) => {
   const { prisma } = fastify;
@@ -27,6 +30,13 @@ const plugin: FastifyPluginAsyncTypebox = async (fastify) => {
     async handler(req) {
       const { query, variables } = req.body;
 
+      const validationErrors = validate(rootSchema, parse(query), [
+        depthLimit(QUERIES_DEPTH_LIMIT),
+      ]);
+      if (validationErrors.length) {
+        return { data: null, errors: validationErrors };
+      }
+
       const contextValue: RequestContext = {
         prismaClient: fastify.prisma,
         dataLoaders: {
@@ -42,6 +52,7 @@ const plugin: FastifyPluginAsyncTypebox = async (fastify) => {
         schema: rootSchema,
         source: query,
         variableValues: variables,
+
         contextValue,
       });
 
