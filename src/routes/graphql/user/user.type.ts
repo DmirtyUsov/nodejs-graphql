@@ -1,5 +1,6 @@
 import {
   GraphQLFloat,
+  GraphQLInputObjectType,
   GraphQLList,
   GraphQLNonNull,
   GraphQLObjectType,
@@ -58,5 +59,21 @@ export const UserGQLType: GraphQLObjectType = new GraphQLObjectType<
         }
       },
     },
+  }),
+});
+
+export const CreateUserInputGQLType = new GraphQLInputObjectType({
+  name: 'CreateUserInput',
+  fields: () => ({
+    name: { type: new GraphQLNonNull(GraphQLString) },
+    balance: { type: new GraphQLNonNull(GraphQLFloat) },
+  }),
+});
+
+export const ChangeUserInputGQLType = new GraphQLInputObjectType({
+  name: 'ChangeUserInput',
+  fields: () => ({
+    name: { type: GraphQLString },
+    balance: { type: GraphQLFloat },
   }),
 });

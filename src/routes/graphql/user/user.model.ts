@@ -15,3 +15,8 @@ export type UserModel = {
   userSubscribedTo?: SubscriptionModel[];
   subscribedToUser?: SubscriptionModel[];
 };
+
+export type UserDto = {
+  name: string;
+  balance: number;
+};
