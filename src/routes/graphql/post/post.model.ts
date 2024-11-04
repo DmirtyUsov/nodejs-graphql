@@ -4,3 +4,5 @@ export type PostModel = {
   content: string;
   authorId: string;
 };
+
+export type PostDto = Omit<PostModel, 'id'>;

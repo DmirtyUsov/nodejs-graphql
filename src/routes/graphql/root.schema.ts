@@ -3,6 +3,7 @@ import { UserQuery } from './user/user.query.js';
 import { MemberTypeQuery } from './member-type/member-type.query.js';
 import { ProfileQuery } from './profile/profile.query.js';
 import { PostQuery } from './post/post.query.js';
+import { PostMutation } from './post/post.mutation.js';
 
 export const rootSchema = new GraphQLSchema({
   query: new GraphQLObjectType({
@@ -11,9 +12,9 @@ export const rootSchema = new GraphQLSchema({
     fields: () => ({ ...UserQuery, ...MemberTypeQuery, ...ProfileQuery, ...PostQuery }),
   }),
 
-  // mutation: new GraphQLObjectType({
-  //   name: 'Mutation',
-  //   description: 'Root Mutation',
-  //   fields: () => ({}),
-  // }),
+  mutation: new GraphQLObjectType({
+    name: 'Mutation',
+    description: 'Root Mutation',
+    fields: () => ({ ...PostMutation }),
+  }),
 });
