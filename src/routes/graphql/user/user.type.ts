@@ -56,6 +56,8 @@ export const UserGQLType: GraphQLObjectType = new GraphQLObjectType<
           const usersIds = parent.userSubscribedTo.map((user) => user.authorId);
           const authors = context.dataLoaders.user.loadMany(usersIds);
           return authors;
+        } else {
+          return [];
         }
       },
     },
